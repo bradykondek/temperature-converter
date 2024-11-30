@@ -13,31 +13,33 @@ import tkinter as tk
 # Convert temperature
 def convert(inputValue, startUnit, resultUnit):
     
-    # Convert input value to float
-    inputValue1 = float(inputValue.get())
-    
-    # Convert depending on input unit and result unit
-    if((startUnit.get())[1] == "C"):  # if input unit is °C
+    # Convert input value from start unit to result unit, return empty string if nothing is entered for input value
+    try:  # attempt to do
 
-        if((resultUnit.get())[1] == "F"):  # if result unit is °F
-            
-            # Return converted value using conversion formula
-            return (float(inputValue.get()) * (9/5) + 32)
-    
-    if((startUnit.get())[1] =="F"):  # if input unit is °F
+        # Convert depending on input unit and result unit
+        if((startUnit.get())[1] == "C"):  # if input unit is °C
 
-        if((resultUnit.get())[1] == "C"):  # if result unit is °C
-
-            # Return converted value using conversion formula
-            return ((float(inputValue.get()) - 32) * (5/9))
+            if((resultUnit.get())[1] == "F"):  # if result unit is °F
+                
+                # Return converted value using conversion formula
+                return (float(inputValue.get()) * (9/5) + 32)
         
-    if(((startUnit.get())[1]) == ((resultUnit.get())[1])):  # if starting unit matches result unit
+        if((startUnit.get())[1] =="F"):  # if input unit is °F
 
-        # Return the same input value, as it doesn't need to be converted to another unit
-        return float(inputValue.get())
+            if((resultUnit.get())[1] == "C"):  # if result unit is °C
+
+                # Return converted value using conversion formula
+                return ((float(inputValue.get()) - 32) * (5/9))
+            
+        if(((startUnit.get())[1]) == ((resultUnit.get())[1])):  # if starting unit matches result unit
+
+            # Return the same input value, as it doesn't need to be converted to another unit
+            return float(inputValue.get())
     
-    # If nothing has been returned, return empty text
-    return " "
+    except ValueError:  # except if ValueError exception arises, most likely due to no value haven been entered into the input field
+
+        # Return empty string
+        return ""
 
 # Initialize application
 def application(root):
@@ -76,6 +78,7 @@ def application(root):
     
     # Dropdown select menu for result unit
     result_unit_selected_option = tk.StringVar()  # keeps track of the currently selected option within resulting unit
+    result_unit_selected_option.set(units[1])  # set option to second element in units list by default
     result_unit_dropdown = tk.OptionMenu(root, result_unit_selected_option, *units)
     result_unit_dropdown.grid(row=2, column=3, pady=8)
 
